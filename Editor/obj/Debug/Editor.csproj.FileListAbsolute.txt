@@ -21,3 +21,8 @@ C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\Editor.ge
 C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\ref\Editor.dll
 C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\ProjectBrowserDialog.g.cs
 C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\ProjectBrowserDialog.baml
+C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\NewProjectView.g.cs
+C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\OpenProjectView.g.cs
+C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\NewProjectView.baml
+C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GameProject\OpenProjectView.baml
+C:\Users\2240001\Desktop\IndieProduction\CurryEngine2\Editor\obj\Debug\GeneratedInternalTypeHelper.g.cs
