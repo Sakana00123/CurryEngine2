@@ -45,5 +45,10 @@ namespace Editor.GameProject
                 CreateProjectButton.IsChecked = true;
             }
         }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+
+        }
     }
 }
