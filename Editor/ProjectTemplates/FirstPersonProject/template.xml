@@ -1,0 +1,11 @@
+<ProjectTemplate xmlns="http://schemas.datacontract.org/2004/07/Editor.GameProject"
+                 xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+    <Folders xmlns:a="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+        <a:string>.Curry</a:string>
+        <a:string>Assets</a:string>
+        <a:string>Scripts</a:string>
+        <a:string>Scenes</a:string>
+    </Folders>
+    <ProjectFile>Project.Curry</ProjectFile>
+    <ProjectType>First Person Project</ProjectType>
+</ProjectTemplate>

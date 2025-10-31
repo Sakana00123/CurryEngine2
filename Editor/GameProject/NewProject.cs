@@ -1,6 +1,7 @@
 ﻿using Editor.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
@@ -12,41 +13,60 @@ namespace Editor.GameProject
     public class ProjectTemplate
     {
         [DataMember]
-        public string ProjectType { get; set; }
+        public string? ProjectType { get; set; }
         [DataMember]
-        public string ProjectFile { get; set; }
+        public string? ProjectFile { get; set; }
         [DataMember]
-        public List<string> Folders { get; set; }
+        public List<string>? Folders { get; set; }
+        public byte[]? Icon { get; set; }
+        public byte[]? Screenshot { get; set; }
+        public string? IconFilePath { get; set; }
+        public string? ScreenshotFilePath { get; set; }
+        public string? ProjectFilePath { get; set; }
     }
 
     class NewProject : ViewModelBase
     {
         // TODO: get the path from the installation location
-        private readonly string _templatePath = @"..\..\CurryEditor\ProjectTemplates";
-        private string _name = "NewProject";
-        public string Name
+        private readonly string _templatePath = @"..\..\Editor\ProjectTemplates";
+        private string _projectName = "NewProject";
+        public string ProjectName
         {
-            get => _name;
+            get => _projectName;
             set
             {
-                if (_name != value)
+                if (_projectName != value)
                 {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
+                    _projectName = value;
+                    OnPropertyChanged(nameof(ProjectName));
                 }
             }
         }
 
-        private string _path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\CurryProject\";
-        public string Path
+        private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\CurryProject\";
+        public string ProjectPath
         {
-            get => _path;
+            get => _projectPath;
             set
             {
-                if (_path != value)
+                if (_projectPath != value)
                 {
-                    _path = value;
-                    OnPropertyChanged(nameof(Path));
+                    _projectPath = value;
+                    OnPropertyChanged(nameof(ProjectPath));
+                }
+            }
+        }
+
+        private ObservableCollection<ProjectTemplate> _projectTemplates = new ObservableCollection<ProjectTemplate>();
+        public ObservableCollection<ProjectTemplate> ProjectTemplates
+        {
+            get => _projectTemplates;
+            set
+            {
+                if (_projectTemplates != value)
+                {
+                    _projectTemplates = value;
+                    OnPropertyChanged(nameof(ProjectTemplates));
                 }
             }
         }
@@ -59,14 +79,14 @@ namespace Editor.GameProject
                 Debug.Assert(templatesFiles.Any());
                 foreach (var file in templatesFiles)
                 {
-                    var template = new ProjectTemplate()
-                    {
-                        ProjectType = "Empty Project",
-                        ProjectFile = "Project.Curry",
-                        Folders = new List<string>() { ".Curry", "Assets", "Scripts", "Scenes" }
-                    };
+                    var template = Serializer.FromFile<ProjectTemplate>(file);
+                    template.IconFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, "Icon.png"));
+                    template.Icon = File.ReadAllBytes(template.IconFilePath);
+                    template.ScreenshotFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, "Screenshot.png"));
+                    template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
+                    template.ProjectFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, template.ProjectFile));
 
-                    Serializer.ToFile(template, file);
+                    _projectTemplates.Add(template);
                 }
             }
             catch (Exception ex)
