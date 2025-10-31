@@ -1,5 +1,6 @@
 ﻿using Editor.GameProject;
 using System.Text;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,6 +22,7 @@ namespace Editor
         {
             InitializeComponent();
             Loaded += OnMainWindowLoaded;
+            Closing += OnMainWindowClosing;
         }
 
         private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -29,17 +31,25 @@ namespace Editor
             OpenProjectBrowserDialog();
         }
 
+        private void OnMainWindowClosing(object sender, CancelEventArgs e)
+        {
+            Closing -= OnMainWindowClosing;
+            Project.Current?.Unload();
+        }
+
         private void OpenProjectBrowserDialog()
         {
-            var projectBrowserDialog = new ProjectBrowserDialog();
+            var projectBrowser = new ProjectBrowserDialog();
             
-            if (projectBrowserDialog.ShowDialog() == false)
+            if (projectBrowser.ShowDialog() == false || projectBrowser.DataContext == null)
             {
                 Application.Current.Shutdown();
             }
             else
             {
                 // Load the selected project
+                Project.Current?.Unload();
+                DataContext = projectBrowser.DataContext;
             }
         }
     }

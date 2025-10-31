@@ -14,6 +14,11 @@
             <ListBox Width="195" Height="250" ItemsSource="{Binding Projects}" x:Name="projectListBox"
                      SelectedIndex="0"
                      Background="#FFF8E1" Foreground="#6D4C41" SelectedItem="#FF7043">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <EventSetter Event="MouseDoubleClick" Handler="OnListBoxItem_Mouse_DoubleClick"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -31,8 +36,10 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
             Margin="0,30,0,0">
-            <Button Content="Open" Width="96" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63" IsDefault="True"/>
-            <Button Content="Exit" Width="96" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63" Margin="30,0,0,0" IsCancel="True"/>
+            <Button Content="Open" Width="96" IsDefault="True" Click="OnOpen_Button_Click"
+                    Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
+            <Button Content="Exit" Width="96" Margin="30,0,0,0" IsCancel="True"
+                    Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
