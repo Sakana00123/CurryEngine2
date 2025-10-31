@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Editor.GameProject"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Activated="Window_Activated"
-        Title="ProjectBrowserDialog" Height="600" Width="800">
-    <Grid>
+        Title="ProjectBrowserDialog" Height="600" Width="800" Background="#4E342E">
+    <Grid Background="#6D4C41">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20"  Background="#6D4C41">
             <ToggleButton x:Name="OpenProjectButton" Content="Open Project" FontSize="32"
-                          Click="OnToggleButtonClick"/>
+                          Click="OnToggleButtonClick" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
             <ToggleButton x:Name="CreateProjectButton" Content="Create Project" FontSize="32" Margin="30,0,0,0"
-                          Click="OnToggleButtonClick"/>
+                          Click="OnToggleButtonClick" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="BrowserContent">
-            <local:OpenProjectView />
-            <local:NewProjectView />
+        <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="BrowserContent" Background="#6D4C41">
+            <local:OpenProjectView Background="#6D4C41"/>
+            <local:NewProjectView Background="#6D4C41"/>
         </StackPanel>
     </Grid>
 </Window>

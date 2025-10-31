@@ -38,6 +38,7 @@ namespace Editor.GameProject
                 if (_projectName != value)
                 {
                     _projectName = value;
+                    ValidateProjectPath();
                     OnPropertyChanged(nameof(ProjectName));
                 }
             }
@@ -52,7 +53,36 @@ namespace Editor.GameProject
                 if (_projectPath != value)
                 {
                     _projectPath = value;
+                    ValidateProjectPath();
                     OnPropertyChanged(nameof(ProjectPath));
+                }
+            }
+        }
+
+        private bool _isValid;
+        public bool IsValid
+        {
+            get => _isValid;
+            set
+            {
+                if (_isValid != value)
+                {
+                    _isValid = value;
+                    OnPropertyChanged(nameof(IsValid));
+                }
+            }
+        }
+
+        private string _errorMsg;
+        public string ErrorMsg
+        {
+            get => _errorMsg;
+            set
+            {
+                if (_errorMsg != value)
+                {
+                    _errorMsg = value;
+                    OnPropertyChanged(nameof(ErrorMsg));
                 }
             }
         }
@@ -69,6 +99,42 @@ namespace Editor.GameProject
                     OnPropertyChanged(nameof(ProjectTemplates));
                 }
             }
+        }
+
+        private bool ValidateProjectPath()
+        {
+            var path = ProjectPath;
+            if (Path.EndsInDirectorySeparator(path)) path += @"\";
+            path += $@"{ProjectName}\";
+
+            IsValid = false;
+            if (string.IsNullOrWhiteSpace(ProjectName.Trim()))
+            {
+                ErrorMsg = "Type in a project name.";
+            }
+            else if (ProjectName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+            {
+                ErrorMsg = "Invalid character(s) used in project name.";
+            }
+            else if (string.IsNullOrWhiteSpace(ProjectPath.Trim()))
+            {
+                ErrorMsg = "Select a valid project folder.";
+            }
+            else if (ProjectPath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+            {
+                ErrorMsg = "Invalid character(s) used in project path.";
+            }
+            else if (Directory.Exists(path) && Directory.EnumerateFileSystemEntries(path).Any())
+            {
+                ErrorMsg = "Selected project folder already exists and is not empty.";
+            }
+            else
+            {
+                ErrorMsg = string.Empty;
+                IsValid = true;
+            }
+
+            return IsValid;
         }
 
         public NewProject()
