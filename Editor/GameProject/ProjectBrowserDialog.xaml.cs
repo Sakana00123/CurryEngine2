@@ -22,6 +22,7 @@ namespace Editor.GameProject
         public ProjectBrowserDialog()
         {
             InitializeComponent();
+            OpenProjectButton.IsChecked = true;
         }
 
         private void OnToggleButtonClick(object sender, RoutedEventArgs e)
