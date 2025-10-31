@@ -6,6 +6,6 @@
         <a:string>Scripts</a:string>
         <a:string>Scenes</a:string>
     </Folders>
-    <ProjectFile>Project.Curry</ProjectFile>
+    <ProjectFile>project.curryproj</ProjectFile>
     <ProjectType>First Person Project</ProjectType>
 </ProjectTemplate>

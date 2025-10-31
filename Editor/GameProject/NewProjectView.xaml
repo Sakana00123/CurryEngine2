@@ -33,24 +33,26 @@
         Margin="0,30,0,0">
             <TextBlock Text="Name" Width="50"
                        Foreground="#FFF8E1"/>
-            <TextBox Width="550" Text="{Binding ProjectName}"
+            <TextBox Width="550" Text="{Binding ProjectName, UpdateSourceTrigger=PropertyChanged}"
                      Background="#FFF3E0" Foreground="#5D4037" BorderBrush="#FFE0B2"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
         Margin="0,5,0,0">
             <TextBlock Text="Path" Width="50"
                        Foreground="#FFF8E1"/>
-            <TextBox Width="500" Text="{Binding ProjectPath}"
+            <TextBox Width="500" Text="{Binding ProjectPath, UpdateSourceTrigger=PropertyChanged}"
                      Background="#FFF3E0" Foreground="#5D4037" BorderBrush="#FFE0B2"/>
             <Button Content="Browse" Width="45" Margin="5,0,0,0"
                     Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
         Margin="0,30,0,0">
-            <Button Content="Create" Width="96" IsDefault="True"
-                    Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
+            <Button Content="Create" Width="96" IsDefault="True" IsEnabled="{Binding IsValid}"
+                    Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"
+                    Click="OnCreate_Button"/>
             <Button Content="Exit" Width="96" Margin="30,0,0,0" IsCancel="True"
                     Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
         </StackPanel>
+        <TextBlock Text="{Binding ErrorMsg}" Foreground="Red" HorizontalAlignment="Center" Margin="0,10,0,0"/>
     </StackPanel>
 </UserControl>

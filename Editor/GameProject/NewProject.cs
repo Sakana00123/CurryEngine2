@@ -25,7 +25,7 @@ namespace Editor.GameProject
         public string? ProjectFilePath { get; set; }
     }
 
-    class NewProject : ViewModelBase
+    internal class NewProject : ViewModelBase
     {
         // TODO: get the path from the installation location
         private readonly string _templatePath = @"..\..\Editor\ProjectTemplates";
@@ -44,7 +44,7 @@ namespace Editor.GameProject
             }
         }
 
-        private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\CurryProject\";
+        private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\CurryProjects\";
         public string ProjectPath
         {
             get => _projectPath;
@@ -88,18 +88,8 @@ namespace Editor.GameProject
         }
 
         private ObservableCollection<ProjectTemplate> _projectTemplates = new ObservableCollection<ProjectTemplate>();
-        public ObservableCollection<ProjectTemplate> ProjectTemplates
-        {
-            get => _projectTemplates;
-            set
-            {
-                if (_projectTemplates != value)
-                {
-                    _projectTemplates = value;
-                    OnPropertyChanged(nameof(ProjectTemplates));
-                }
-            }
-        }
+        public ReadOnlyObservableCollection<ProjectTemplate> ProjectTemplates
+        { get; }
 
         private bool ValidateProjectPath()
         {
@@ -137,8 +127,48 @@ namespace Editor.GameProject
             return IsValid;
         }
 
+        public string CreateProject(ProjectTemplate template)
+        {
+            ValidateProjectPath();
+            if (!IsValid)
+            {
+                return string.Empty;
+            }
+
+            if (!Path.EndsInDirectorySeparator(ProjectPath)) ProjectPath += @"\";
+            var path = $@"{ProjectPath}{ProjectName}\";
+
+            try
+            {
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                foreach (var folder in template.Folders!)
+                {
+                    Directory.CreateDirectory(Path.GetFullPath(Path.Combine(Path.GetDirectoryName(path)!, folder)));
+                }
+                var dirInfo = new DirectoryInfo(path + @".Curry\");
+                dirInfo.Attributes |= FileAttributes.Hidden;
+                File.Copy(template.IconFilePath!, Path.GetFullPath(Path.Combine(dirInfo.FullName, "Icon.png")));
+                File.Copy(template.ScreenshotFilePath!, Path.GetFullPath(Path.Combine(dirInfo.FullName, "Screenshot.png")));
+
+                var projectXml = File.ReadAllText(template.ProjectFilePath!);
+                projectXml = string.Format(projectXml, ProjectName, ProjectPath);
+                var projectPath = Path.GetFullPath(Path.Combine(path, $"{ProjectName}{Project.Extension}"));
+                File.WriteAllText(projectPath, projectXml);
+
+                return path;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                // TODO: log error
+                return string.Empty;
+            }
+
+        }
+
         public NewProject()
         {
+            ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
             try
             {
                 var templatesFiles = Directory.GetFiles(_templatePath, "template.xml", SearchOption.AllDirectories);
@@ -150,10 +180,11 @@ namespace Editor.GameProject
                     template.Icon = File.ReadAllBytes(template.IconFilePath);
                     template.ScreenshotFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, "Screenshot.png"));
                     template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
-                    template.ProjectFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, template.ProjectFile));
+                    template.ProjectFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file)!, template.ProjectFile!));
 
                     _projectTemplates.Add(template);
                 }
+                ValidateProjectPath();
             }
             catch (Exception ex)
             {
