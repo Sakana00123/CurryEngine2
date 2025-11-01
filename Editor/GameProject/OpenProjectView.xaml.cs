@@ -33,11 +33,6 @@ namespace Editor.GameProject
             };
         }
 
-        private void OpenProjectView_Loaded(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void OnOpen_Button_Click(object sender, RoutedEventArgs e)
         {
             OpenSelectedProject();

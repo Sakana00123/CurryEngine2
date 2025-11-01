@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Editor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae3cd06541f38d33e58722552ae2d589c6cbdd74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd9582046ecf9a494f1ff9af1bd90898f3497ac3")]
 [assembly: System.Reflection.AssemblyProductAttribute("Editor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Editor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

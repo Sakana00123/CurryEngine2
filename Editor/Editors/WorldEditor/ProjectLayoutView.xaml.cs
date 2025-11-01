@@ -1,4 +1,5 @@
-﻿using Editor.GameProject;
+﻿using Editor.Components;
+using Editor.GameProject;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,6 +26,19 @@ namespace Editor.Editors
         public ProjectLayoutView()
         {
             InitializeComponent();
+        }
+
+        private void OnAddGameObject_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var vm = button?.DataContext as Scene;
+            vm?.AddGameObjectCommand.Execute(new GameObject(vm) { Name = "GameObject" });
+        }
+
+        private void OnGameObjects_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var entity = (sender as ListBox)?.SelectedItems[0];
+            GameObjectView.Instance!.DataContext = entity;
         }
     }
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Xml;
 
 namespace Editor.Utilities
 {
@@ -13,9 +15,22 @@ namespace Editor.Utilities
         {
             try
             {
-                using var fs = new FileStream(path, FileMode.Create);
                 var serializer = new DataContractSerializer(typeof(T));
-                serializer.WriteObject(fs, instance);
+
+                var settings = new XmlWriterSettings
+                {
+                    Indent = true,                 // 整形あり
+                    IndentChars = "  ",            // スペース2つでインデント
+                    NewLineOnAttributes = false,   // 属性は改行しない
+                    Encoding = new UTF8Encoding(false) // UTF-8 (BOMなし)
+                };
+
+                using (var writer = XmlWriter.Create(path, settings))
+                {
+                    serializer.WriteObject(writer, instance);
+                }
+                //using var fs = new FileStream(path, FileMode.Create);
+                //serializer.WriteObject(fs, instance);
             }
             catch (Exception ex)
             {
