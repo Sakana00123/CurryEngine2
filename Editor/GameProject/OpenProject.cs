@@ -48,9 +48,9 @@ namespace Editor.GameProject
         {
             if ((File.Exists(_projectDataPath)))
             {
-                var projects = Serializer.FromFile<ProjectDataList>(_projectDataPath).Projects.OrderByDescending(x => x.Date);
+                var projects = Serializer.FromFile<ProjectDataList>(_projectDataPath).Projects?.OrderByDescending(x => x.Date);
                 _projects.Clear();
-                foreach (var project in projects)
+                foreach (var project in projects!)
                 {
                     if (File.Exists(project.FullPath))
                     {
@@ -84,7 +84,7 @@ namespace Editor.GameProject
             }
             WriteProjectData();
 
-            return Project.Load(project.FullPath);
+            return Project.Load(project.FullPath!)!;
         }
 
         static OpenProject()

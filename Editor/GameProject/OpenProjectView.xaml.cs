@@ -24,6 +24,18 @@ namespace Editor.GameProject
         public OpenProjectView()
         {
             InitializeComponent();
+
+            Loaded += (s, e) =>
+            {
+                var item = projectListBox.ItemContainerGenerator
+                .ContainerFromIndex(projectListBox.SelectedIndex) as ListBoxItem;
+                item?.Focus();
+            };
+        }
+
+        private void OpenProjectView_Loaded(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnOpen_Button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +49,7 @@ namespace Editor.GameProject
 
         private void OpenSelectedProject()
         {
-            var project = OpenProject.Open(projectListBox.SelectedItem as ProjectData);
+            var project = OpenProject.Open((ProjectData)projectListBox.SelectedItem);
             bool dialogResult = false;
             var win = Window.GetWindow(this);
             if (project != null)

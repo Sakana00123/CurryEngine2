@@ -54,3 +54,9 @@ C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\refint\Edito
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editor.pdb
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editor.genruntimeconfig.cache
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\ref\Editor.dll
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\WorldEditorView.g.cs
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\WorldEditorView.baml
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\ProjectLayoutView.g.cs
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\ProjectLayoutView.baml
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Utilities\UndoRedoView.g.cs
+C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Utilities\UndoRedoView.baml

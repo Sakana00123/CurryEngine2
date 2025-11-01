@@ -30,14 +30,14 @@ namespace Editor.Utilities
             {
                 using var fs = new FileStream(path, FileMode.Open);
                 var serializer = new DataContractSerializer(typeof(T));
-                T instance = (T)serializer.ReadObject(fs);
+                T instance = (T)serializer.ReadObject(fs)!;
                 return instance;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 // TODO: log error
-                return default(T);
+                return default(T)!;
             }
         }
     }

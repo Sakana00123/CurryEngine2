@@ -13,7 +13,7 @@ namespace Editor.GameProject
     {
         private string? _name;
         [DataMember]
-        public string Name
+        public string? Name
         {
             get => _name;
             set

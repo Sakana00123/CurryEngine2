@@ -22,7 +22,7 @@ namespace Editor
         {
             InitializeComponent();
             Loaded += OnMainWindowLoaded;
-            Closing += OnMainWindowClosing;
+            Closing += OnMainWindowClosing!;
         }
 
         private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
@@ -33,7 +33,7 @@ namespace Editor
 
         private void OnMainWindowClosing(object sender, CancelEventArgs e)
         {
-            Closing -= OnMainWindowClosing;
+            Closing -= OnMainWindowClosing!;
             Project.Current?.Unload();
         }
 
