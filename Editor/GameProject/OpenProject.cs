@@ -99,7 +99,8 @@ namespace Editor.GameProject
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                // TODO: log error
+                Logger.Log(MessageType.Error, $"Failed to read project data: {ex.Message}");
+                throw;
             }
         }
     }

@@ -22,7 +22,18 @@ namespace Editor.GameProject
         public ProjectBrowserDialog()
         {
             InitializeComponent();
-            OpenProjectButton.IsChecked = true;
+            Loaded += OnProjectBrowserDialogLoaded;
+        }
+
+        private void OnProjectBrowserDialogLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnProjectBrowserDialogLoaded;
+            if (!OpenProject.Projects.Any())
+            {
+                OpenProjectButton.IsEnabled = false;
+                OpenProjectView.Visibility = Visibility.Hidden;
+                OnToggleButtonClick(CreateProjectButton, new RoutedEventArgs());
+            }
         }
 
         private void OnToggleButtonClick(object sender, RoutedEventArgs e)

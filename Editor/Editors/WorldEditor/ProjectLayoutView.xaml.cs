@@ -1,5 +1,6 @@
 ﻿using Editor.Components;
 using Editor.GameProject;
+using Editor.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,8 +38,29 @@ namespace Editor.Editors
 
         private void OnGameObjects_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var entity = (sender as ListBox)?.SelectedItems[0];
-            GameObjectView.Instance!.DataContext = entity;
+            GameObjectView.Instance!.DataContext = null;
+            var listBox = sender as ListBox;
+            if (e.AddedItems.Count > 0)
+            {
+                GameObjectView.Instance.DataContext = (sender as ListBox)?.SelectedItems[0];
+            }
+
+            var newSelection = listBox?.SelectedItems.Cast<GameObject>().ToList();
+            var previousSelection = newSelection!.Except(e.AddedItems.Cast<GameObject>()).Concat(e.RemovedItems.Cast<GameObject>()).ToList();
+
+            Project.UndoRedo.Add(new UndoRedoAction(
+                () => // Undo: 元の選択状態に戻す
+                {
+                    listBox!.UnselectAll();
+                    previousSelection.ForEach(x => ((ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(x)).IsSelected = true);
+                },
+                () => // Redo: 新しい選択状態にする
+                {
+                    listBox!.UnselectAll();
+                    newSelection!.ForEach(x => ((ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(x)).IsSelected = true);
+                },
+                "Selection changed"
+            ));
         }
     }
 }

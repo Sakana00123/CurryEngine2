@@ -160,7 +160,8 @@ namespace Editor.GameProject
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                // TODO: log error
+                Logger.Log(MessageType.Error, $"Failed to create {template.ProjectType}: {ex.Message}");
+                throw;
                 return string.Empty;
             }
 
@@ -189,7 +190,8 @@ namespace Editor.GameProject
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                // TODO: log error
+                Logger.Log(MessageType.Error, $"Failed to load project templates: {ex.Message}");
+                throw;
             }
         }
     }

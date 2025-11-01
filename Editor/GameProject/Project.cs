@@ -72,13 +72,14 @@ namespace Editor.GameProject
         }
         public void Unload()
         {
-            
+            UndoRedo.Reset();
         }
 
         public static void Save(Project project)
         {
             Debug.Assert(project.FullPath != null);
             Serializer.ToFile(project, project.FullPath);
+            Logger.Log(MessageType.Info, $"Project saved to {project.FullPath}");
         }
 
         [OnDeserialized]

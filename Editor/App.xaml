@@ -1,9 +1,9 @@
 ﻿<Application x:Class="Editor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Editor"
+             xmlns:local="clr-namespace:Editor.Dictionaries"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <local:ControlTemplates />
     </Application.Resources>
 </Application>

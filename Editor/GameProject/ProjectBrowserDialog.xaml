@@ -12,14 +12,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20"  Background="#6D4C41">
-            <ToggleButton x:Name="OpenProjectButton" Content="Open Project" FontSize="32"
+            <ToggleButton x:Name="OpenProjectButton" Content="Open Project" FontSize="32" IsChecked="True"
                           Click="OnToggleButtonClick" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
             <ToggleButton x:Name="CreateProjectButton" Content="Create Project" FontSize="32" Margin="30,0,0,0"
                           Click="OnToggleButtonClick" Background="#FFB300" Foreground="#3E2723" BorderBrush="#8D6E63"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="BrowserContent" Background="#6D4C41">
-            <local:OpenProjectView Background="#6D4C41"/>
-            <local:NewProjectView Background="#6D4C41"/>
+            <local:OpenProjectView x:Name="OpenProjectView" Background="#6D4C41"/>
+            <local:NewProjectView x:Name="NewProjectView" Background="#6D4C41"/>
         </StackPanel>
     </Grid>
 </Window>
