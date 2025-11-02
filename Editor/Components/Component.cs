@@ -19,9 +19,9 @@ namespace Editor.Components
     abstract class Component : ViewModelBase
     {
         [DataMember]
-        public GameObject Owner { get; private set; }
+        public GameEntity Owner { get; private set; }
 
-        public Component(GameObject owner)
+        public Component(GameEntity owner)
         {
             Debug.Assert(owner != null);
             Owner = owner;

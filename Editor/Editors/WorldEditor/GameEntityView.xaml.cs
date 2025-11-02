@@ -22,12 +22,12 @@ namespace Editor.Editors
     /// <summary>
     /// GameObjectView.xaml の相互作用ロジック
     /// </summary>
-    public partial class GameObjectView : UserControl
+    public partial class GameEntityView : UserControl
     {
         private Action _undoAction;
         private string _propertyName;
-        public static GameObjectView? Instance { get; private set; }
-        public GameObjectView()
+        public static GameEntityView? Instance { get; private set; }
+        public GameEntityView()
         {
             InitializeComponent();
             DataContext = null;
@@ -38,7 +38,7 @@ namespace Editor.Editors
             {
                 if (DataContext != null)
                 {
-                    (DataContext as MSObject).PropertyChanged += (s, e) => _propertyName = e.PropertyName;
+                    (DataContext as MSEntity).PropertyChanged += (s, e) => _propertyName = e.PropertyName;
                 }
             };
         }
@@ -49,12 +49,12 @@ namespace Editor.Editors
         /// <returns> UndoRedo 用のアクション </returns>
         private Action GetRenameAction()
         {
-            var vm = DataContext as MSObject;
-            var selection = vm?.SelectedObjects.Select(entity => (entity, entity.Name)).ToList();
+            var vm = DataContext as MSEntity;
+            var selection = vm?.SelectedEntities.Select(entity => (entity, entity.Name)).ToList();
             return new Action(() =>
             {
                 selection?.ForEach(item => item.entity.Name = item.Name);
-                (DataContext as MSObject)?.Refresh();
+                (DataContext as MSEntity)?.Refresh();
             });
         }
 
@@ -62,14 +62,14 @@ namespace Editor.Editors
         /// IsActive プロパティ変更用の UndoRedo アクションを取得します。
         /// </summary>
         /// <returns> UndoRedo 用のアクション </returns>
-        private Action GetIsActiveAction()
+        private Action GetIsEnabledAction()
         {
-            var vm = DataContext as MSObject;
-            var selection = vm?.SelectedObjects.Select(entity => (entity, entity.IsActive)).ToList();
+            var vm = DataContext as MSEntity;
+            var selection = vm?.SelectedEntities.Select(entity => (entity, entity.IsEnabled)).ToList();
             return new Action(() =>
             {
-                selection?.ForEach(item => item.entity.IsActive = item.IsActive);
-                (DataContext as MSObject)?.Refresh();
+                selection?.ForEach(item => item.entity.IsEnabled = item.IsEnabled);
+                (DataContext as MSEntity)?.Refresh();
             });
         }
 
@@ -87,10 +87,10 @@ namespace Editor.Editors
         private void OnName_TextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             // 名前が変更された場合のみ UndoRedo に登録
-            if (_propertyName == nameof(MSObject.Name) && _undoAction != null)
+            if (_propertyName == nameof(MSEntity.Name) && _undoAction != null)
             {
                 var redoAction = GetRenameAction();
-                Project.UndoRedo.Add(new UndoRedoAction(_undoAction, redoAction, "Rename GameObject"));
+                Project.UndoRedo.Add(new UndoRedoAction(_undoAction, redoAction, "Rename GameEntity"));
                 _propertyName = null;
             }
             _undoAction = null;
@@ -99,15 +99,15 @@ namespace Editor.Editors
         /// <summary>
         /// IsActive チェックボックスがクリックされたときの処理
         /// </summary>
-        private void OnIsActive_CheckBox_Click(object sender, RoutedEventArgs e)
+        private void OnIsEnabled_CheckBox_Click(object sender, RoutedEventArgs e)
         {
-            var undoAction = GetIsActiveAction();
-            var vm = DataContext as MSObject;
+            var undoAction = GetIsEnabledAction();
+            var vm = DataContext as MSEntity;
             if (vm == null) return;
-            vm.IsActive = ((CheckBox)sender).IsChecked == true;
-            var redoAction = GetIsActiveAction();
+            vm.IsEnabled = ((CheckBox)sender).IsChecked == true;
+            var redoAction = GetIsEnabledAction();
             Project.UndoRedo.Add(new UndoRedoAction(undoAction, redoAction, 
-                vm.IsActive == true ? "IsActive GmaeObject" : "Disactive GameObject"));
+                vm.IsEnabled == true ? "IsEnabled Game Entity" : "Disabled Game Entity"));
         }
 
         /// <summary>

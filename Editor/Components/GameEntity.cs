@@ -14,23 +14,23 @@ namespace Editor.Components
     /// ゲームオブジェクトを表します。
     /// </summary>
     /// <remarks>
-    /// <see cref="GameObject"/> クラスは、シーン内の個々のオブジェクトを表現します。各ゲームオブジェクトは複数のコンポーネントを持つことができ、これによりその振る舞いや特性が定義されます。
+    /// <see cref="GameEntity"/> クラスは、シーン内の個々のオブジェクトを表現します。各ゲームオブジェクトは複数のコンポーネントを持つことができ、これによりその振る舞いや特性が定義されます。
     /// </remarks>
     [DataContract]
     [KnownType(typeof(Transform))]
-    class GameObject : ViewModelBase
+    class GameEntity : ViewModelBase
     {
-        private bool _isActive = true;
+        private bool _isEnabled = true;
         [DataMember]
-        public bool IsActive
+        public bool IsEnabled
         {
-            get => _isActive;
+            get => _isEnabled;
             set
             {
-                if (_isActive != value)
+                if (_isEnabled != value)
                 {
-                    _isActive = value;
-                    OnPropertyChanged(nameof(IsActive));
+                    _isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace Editor.Components
             }
         }
 
-        public GameObject(Scene scene)
+        public GameEntity(Scene scene)
         {
             // nullチェック
             Debug.Assert(scene != null);
@@ -79,20 +79,20 @@ namespace Editor.Components
         }
     }
 
-    abstract class MSObject : ViewModelBase
+    abstract class MSEntity : ViewModelBase
     {
         // _enableUpdates フラグは、プロパティの更新中に変更通知を一時的に無効にするために使用されます。
         private bool _enableUpdates = true;
-        private bool? _isActive;
-        public bool? IsActive
+        private bool? _isEnabled;
+        public bool? IsEnabled
         {
-            get => _isActive;
+            get => _isEnabled;
             set
             {
-                if (_isActive != value)
+                if (_isEnabled != value)
                 {
-                    _isActive = value;
-                    OnPropertyChanged(nameof(IsActive));
+                    _isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
                 }
             }
         }
@@ -114,12 +114,12 @@ namespace Editor.Components
         private readonly ObservableCollection<IMSComponent> _components = new ObservableCollection<IMSComponent>();
         public ReadOnlyObservableCollection<IMSComponent> Components { get; }
 
-        public List<GameObject> SelectedObjects { get; }
+        public List<GameEntity> SelectedEntities { get; }
 
-        public static float? GetMixedValue(List<GameObject> objects, Func<GameObject, float> getProperty)
+        public static float? GetMixedValue(List<GameEntity> entities, Func<GameEntity, float> getProperty)
         {
-            var value = getProperty(objects.First());
-            foreach (var obj in objects.Skip(1))
+            var value = getProperty(entities.First());
+            foreach (var obj in entities.Skip(1))
             {
                 if (!value.IsTheSameAs(getProperty(obj)))
                 {
@@ -128,10 +128,10 @@ namespace Editor.Components
             }
             return value;
         }
-        public static bool? GetMixedValue(List<GameObject> objects, Func<GameObject, bool> getProperty)
+        public static bool? GetMixedValue(List<GameEntity> entities, Func<GameEntity, bool> getProperty)
         {
-            var value = getProperty(objects.First());
-            foreach (var obj in objects.Skip(1))
+            var value = getProperty(entities.First());
+            foreach (var obj in entities.Skip(1))
             {
                 if (value != (getProperty(obj)))
                 {
@@ -140,10 +140,10 @@ namespace Editor.Components
             }
             return value;
         }
-        public static string? GetMixedValue(List<GameObject> objects, Func<GameObject, string> getProperty)
+        public static string? GetMixedValue(List<GameEntity> entities, Func<GameEntity, string> getProperty)
         {
-            var value = getProperty(objects.First());
-            foreach (var obj in objects.Skip(1))
+            var value = getProperty(entities.First());
+            foreach (var obj in entities.Skip(1))
             {
                 if (value != (getProperty(obj)))
                 {
@@ -156,16 +156,16 @@ namespace Editor.Components
         {
             switch (propertyName)
             {
-                case nameof(IsActive): SelectedObjects.ForEach(x => x.IsActive = IsActive!.Value); return true;
-                case nameof(Name): SelectedObjects.ForEach(x => x.Name = Name); return true;
+                case nameof(IsEnabled): SelectedEntities.ForEach(x => x.IsEnabled = IsEnabled!.Value); return true;
+                case nameof(Name): SelectedEntities.ForEach(x => x.Name = Name); return true;
             }
             return false;
         }
 
         protected virtual bool UpdateMSGameObject()
         {
-            IsActive = GetMixedValue(SelectedObjects, new Func<GameObject, bool>(x => x.IsActive));
-            Name = GetMixedValue(SelectedObjects, new Func<GameObject, string>(x => x.Name));
+            IsEnabled = GetMixedValue(SelectedEntities, new Func<GameEntity, bool>(x => x.IsEnabled));
+            Name = GetMixedValue(SelectedEntities, new Func<GameEntity, string>(x => x.Name));
 
             return true;
         }
@@ -177,19 +177,19 @@ namespace Editor.Components
             _enableUpdates = true;
         }
 
-        public MSObject(List<GameObject> objects)
+        public MSEntity(List<GameEntity> entities)
         {
-            Debug.Assert(objects != null && objects.Count > 0);
+            Debug.Assert(entities != null && entities.Count > 0);
             Components = new ReadOnlyObservableCollection<IMSComponent>(_components);
-            SelectedObjects = objects;
+            SelectedEntities = entities;
             PropertyChanged += (s, e) => { if (_enableUpdates) UpdateGameObjects(e.PropertyName!); };
         }
 
     }
 
-    class MSGameObject : MSObject
+    class MSGameEntity : MSEntity
     {
-        public MSGameObject(List<GameObject> objects) : base(objects)
+        public MSGameEntity(List<GameEntity> entities) : base(entities)
         {
             Refresh();
         }

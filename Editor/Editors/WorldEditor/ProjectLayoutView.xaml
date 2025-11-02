@@ -41,18 +41,18 @@
                                             CommandParameter="{Binding}" Focusable="False"
                                             Grid.Column="1"/>
                                     <Button Content="+" IsEnabled="{Binding IsActive}"
-                                            Click="OnAddGameObject_Button_Click"
+                                            Click="OnAddGameEntity_Button_Click"
                                             Grid.Column="2" Margin="5,0,0,0"/>
                                 </Grid>
                             </Expander.Header>
-                            <ListBox ItemsSource="{Binding GameObjects}" IsEnabled="{Binding IsActive}" SelectionMode="Extended"
-                                     SelectionChanged="OnGameObjects_ListBox_SelectionChanged">
+                            <ListBox ItemsSource="{Binding GameEntities}" IsEnabled="{Binding IsActive}" SelectionMode="Extended"
+                                     SelectionChanged="OnGameEntities_ListBox_SelectionChanged">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Name}"/>
                                             <Button Content="Remove"
-                                                    Command="{Binding ParentScene.RemoveGameObjectCommand}"
+                                                    Command="{Binding ParentScene.RemoveGameEntityCommand}"
                                                     CommandParameter="{Binding}"/>
                                         </StackPanel>
                                     </DataTemplate>
