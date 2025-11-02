@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Editor.Editors"
+             xmlns:local="clr-namespace:Editor.Editors" xmlns:components="clr-namespace:Editor.Components" d:DataContext="{d:DesignInstance Type=components:MSObject}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -38,11 +38,13 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Name" Grid.Column="0" Margin="5,0,0,0" FontSize="16" FontWeight="Bold"/>
-                <TextBox Text="{Binding Name}" Grid.Column="1" Tag="{Binding RenameCommand}"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=Explicit}" Grid.Column="1"
+                         KeyDown="OnTextBox_KeyDown"
+                         GotKeyboardFocus="OnName_TextBox_GotKeyboardFocus"
+                         LostKeyboardFocus="OnName_TextBox_LostKeyboardFocus"/>
                 <StackPanel Orientation="Horizontal" Grid.Column="2">
-                    <CheckBox IsChecked="{Binding IsActive, Mode=OneWay}"
-                              Command="{Binding IsActiveCommand}"
-                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                    <CheckBox IsChecked="{Binding IsActive}"
+                              Click="OnIsActive_CheckBox_Click"
                               Margin="5,0" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>

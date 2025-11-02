@@ -19,7 +19,7 @@ namespace Editor.GameProject
     /// <see cref="Scene"/> クラスは、ゲーム内の特定の環境やレベルを表現します。各シーンは複数のゲームオブジェクトを含むことができ、これによりシーン内の要素やインタラクションが定義されます。
     /// </remarks>
     [DataContract]
-    public class Scene : ViewModelBase
+    class Scene : ViewModelBase
     {
         private string? _name;
         [DataMember]

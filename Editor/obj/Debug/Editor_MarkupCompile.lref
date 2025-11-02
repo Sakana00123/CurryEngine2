@@ -1,5 +1,6 @@
 ﻿
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\App.xaml;;
+FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Dictionaries\ControlTemplates.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Editors\WorldEditor\GameObjectView.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Editors\WorldEditor\ProjectLayoutView.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Editors\WorldEditor\WorldEditorView.xaml;;
@@ -7,6 +8,6 @@ FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\GameProject\NewProjec
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\GameProject\OpenProjectView.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\GameProject\ProjectBrowserDialog.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\MainWindow.xaml;;
-FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Utilities\UndoRedoView.xaml;;
 FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Utilities\LoggerView.xaml;;
+FC:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\Utilities\UndoRedoView.xaml;;
 

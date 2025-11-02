@@ -1,14 +1,14 @@
-﻿<ResourceDictionary x:Class="Editor.Dictionaries.ControlTemplates"
-                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Editor.Dictionaries">
     <Style TargetType="{x:Type TextBox}" x:Key="TextBoxStyle">
         <!-- TODO: define the visual look of textbox here -->
         <Setter Property="Background" Value="#FFF3E0"/>
     </Style>
 
-    <Style TargetType="{x:Type TextBox}" x:Key="TextBox">
-        <EventSetter Event="KeyDown" Handler="OnTextBox_KeyDown"/>
-    </Style>
+    <!--<Style TargetType="{x:Type TextBox}" x:Key="TextBox">
+        <EventSetter Event="KeyDown" Handler="view:GameObjectView.OnTextBox_KeyDown"/>
+    </Style>-->
 
     <Style TargetType="{x:Type Button}" x:Key="ButtonStyle">
         <Setter Property="Background" Value="#FFB300"/>

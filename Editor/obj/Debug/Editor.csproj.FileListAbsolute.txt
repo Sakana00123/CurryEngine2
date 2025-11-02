@@ -63,7 +63,6 @@ C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Utilities\Un
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\GameObjectView.g.cs
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Editors\WorldEditor\GameObjectView.baml
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Dictionaries\ControlTemplates.baml
-C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Dictionaries\ControlTemplates.g.cs
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\App.baml
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Utilities\LoggerView.g.cs
 C:\Users\dheit\Desktop\GitHubProjects\CurryEngine2\Editor\obj\Debug\Utilities\LoggerView.baml

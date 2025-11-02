@@ -1,9 +1,13 @@
 ﻿<Application x:Class="Editor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Editor.Dictionaries"
+             xmlns:local="clr-namespace:Editor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <local:ControlTemplates />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Dictionaries/ControlTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

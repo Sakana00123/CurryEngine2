@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Editor.Components;
+using Editor.GameProject;
+using Editor.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +24,127 @@ namespace Editor.Editors
     /// </summary>
     public partial class GameObjectView : UserControl
     {
+        private Action _undoAction;
+        private string _propertyName;
         public static GameObjectView? Instance { get; private set; }
         public GameObjectView()
         {
             InitializeComponent();
             DataContext = null;
             Instance = this;
+
+            // DataContext の変更を監視して、プロパティ変更をキャッチする
+            DataContextChanged += (_, __) =>
+            {
+                if (DataContext != null)
+                {
+                    (DataContext as MSObject).PropertyChanged += (s, e) => _propertyName = e.PropertyName;
+                }
+            };
+        }
+
+        /// <summary>
+        /// IsActive プロパティ変更用の UndoRedo アクションを取得します。
+        /// </summary>
+        /// <returns> UndoRedo 用のアクション </returns>
+        private Action GetRenameAction()
+        {
+            var vm = DataContext as MSObject;
+            var selection = vm?.SelectedObjects.Select(entity => (entity, entity.Name)).ToList();
+            return new Action(() =>
+            {
+                selection?.ForEach(item => item.entity.Name = item.Name);
+                (DataContext as MSObject)?.Refresh();
+            });
+        }
+
+        /// <summary>
+        /// IsActive プロパティ変更用の UndoRedo アクションを取得します。
+        /// </summary>
+        /// <returns> UndoRedo 用のアクション </returns>
+        private Action GetIsActiveAction()
+        {
+            var vm = DataContext as MSObject;
+            var selection = vm?.SelectedObjects.Select(entity => (entity, entity.IsActive)).ToList();
+            return new Action(() =>
+            {
+                selection?.ForEach(item => item.entity.IsActive = item.IsActive);
+                (DataContext as MSObject)?.Refresh();
+            });
+        }
+
+        /// <summary>
+        /// 名前変更のフォーカスが当たったときに UndoRedo 用のアクションを準備します。
+        /// </summary>
+        private void OnName_TextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            _undoAction = GetRenameAction();
+        }
+
+        /// <summary>
+        /// 名前変更のフォーカスが外れたときに UndoRedo に登録します。
+        /// </summary>
+        private void OnName_TextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            // 名前が変更された場合のみ UndoRedo に登録
+            if (_propertyName == nameof(MSObject.Name) && _undoAction != null)
+            {
+                var redoAction = GetRenameAction();
+                Project.UndoRedo.Add(new UndoRedoAction(_undoAction, redoAction, "Rename GameObject"));
+                _propertyName = null;
+            }
+            _undoAction = null;
+        }
+
+        /// <summary>
+        /// IsActive チェックボックスがクリックされたときの処理
+        /// </summary>
+        private void OnIsActive_CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            var undoAction = GetIsActiveAction();
+            var vm = DataContext as MSObject;
+            if (vm == null) return;
+            vm.IsActive = ((CheckBox)sender).IsChecked == true;
+            var redoAction = GetIsActiveAction();
+            Project.UndoRedo.Add(new UndoRedoAction(undoAction, redoAction, 
+                vm.IsActive == true ? "IsActive GmaeObject" : "Disactive GameObject"));
+        }
+
+        /// <summary>
+        /// TextBox でキーが押されたときの処理(参考動画ではここじゃないけどいくら試しても動かなかったから動かすためにここに書いてる)
+        /// </summary>
+        private void OnTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            Debug.Assert(textBox != null);
+            var expression = textBox.GetBindingExpression(TextBox.TextProperty);
+            if (expression == null) return;
+
+            if (e.Key == Key.Enter) // Enterキーが押された場合
+            {
+                // コマンドが設定されていれば実行する
+                if (textBox.Tag is ICommand command && command.CanExecute(textBox.Text))
+                {
+                    command.Execute(textBox.Text);
+                }
+                else // コマンドが設定されていなければ変更を確定させる
+                {
+                    // 変更を確定させる
+                    expression.UpdateSource();
+                }
+                // フォーカスを外して変更を確定させる
+                Keyboard.ClearFocus();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape) // Escapeキーが押された場合
+            {
+                // 変更をキャンセルする
+                expression.UpdateTarget();
+                // フォーカスを外す
+                var scope = FocusManager.GetFocusScope(textBox);
+                FocusManager.SetFocusedElement(scope, null as IInputElement);
+                Keyboard.ClearFocus();
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Editor.Components
     /// <see cref="Position"/>、<see cref="Rotation"/>、および <see cref="Scale"/> プロパティを通じてアクセスできます。
     /// </remarks>
     [DataContract]
-    public class Transform : Component
+    class Transform : Component
     {
         private Vector3 _position;
         [DataMember]

@@ -38,13 +38,7 @@ namespace Editor.Editors
 
         private void OnGameObjects_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            GameObjectView.Instance!.DataContext = null;
             var listBox = sender as ListBox;
-            if (e.AddedItems.Count > 0)
-            {
-                GameObjectView.Instance.DataContext = (sender as ListBox)?.SelectedItems[0];
-            }
-
             var newSelection = listBox?.SelectedItems.Cast<GameObject>().ToList();
             var previousSelection = newSelection!.Except(e.AddedItems.Cast<GameObject>()).Concat(e.RemovedItems.Cast<GameObject>()).ToList();
 
@@ -61,6 +55,13 @@ namespace Editor.Editors
                 },
                 "Selection changed"
             ));
+
+            MSGameObject msObject = null!;
+            if (newSelection.Count != 0)
+            {
+                msObject = new MSGameObject(newSelection);
+            }
+            GameObjectView.Instance.DataContext = msObject;
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Editor
 {
     class RelayCommand<T> : ICommand
     {
-        private readonly Action<T>? _execute;
-        private readonly Predicate<T>? _canExecute;
+        private readonly Action<T> _execute;
+        private readonly Predicate<T> _canExecute;
 
         public event EventHandler? CanExecuteChanged
         {
@@ -25,7 +25,7 @@ namespace Editor
 
         public void Execute(object? parameter)
         {
-            _execute!((T)parameter!);
+            _execute((T)parameter!);
         }
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute = null)
