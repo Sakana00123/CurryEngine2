@@ -16,9 +16,9 @@ namespace Curry
 			Transform::InitInfo* transform{ nullptr };
 		};
 
-		EntityId CreateGameEntity(const EntityInfo& info);
-		void RemoveGameEntity(EntityId id);
-		bool IsAlive(EntityId id);
+		Entity CreateGameEntity(const EntityInfo& info);
+		void RemoveGameEntity(Entity e);
+		bool IsAlive(Entity e);
 	} // namespace GameEntity
 
 } // namespace Curry

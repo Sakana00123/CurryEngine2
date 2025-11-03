@@ -3,8 +3,6 @@
 
 namespace Curry::Transform
 {
-	DEFINE_ID_TYPE(TransformId);
-
 	struct InitInfo
 	{
 		Float32 position[3]{};
@@ -13,6 +11,6 @@ namespace Curry::Transform
 	};
 
 
-	TransformId CreateTransform(const InitInfo& info, GameEntity::EntityId entityId);
-	void RemoveTransform(TransformId id);
+	Component CreateTransform(const InitInfo& info, GameEntity::Entity entity);
+	void RemoveTransform(Component c);
 }
