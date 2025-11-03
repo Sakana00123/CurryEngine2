@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "新しいプロファイル",
+    "Projects": [
+      {
+        "Path": "EngineTest\\EngineTest.vcxproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Editor\\Editor.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
