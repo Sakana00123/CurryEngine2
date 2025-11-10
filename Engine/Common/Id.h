@@ -9,7 +9,7 @@ namespace Curry::Id
 	// IDのビット構成 (ID Bit Structure)
 	namespace Internal
 	{
-		inline constexpr UInt32 GenerationBits{ 8 };												// 世代番号に使用するビット数
+		inline constexpr UInt32 GenerationBits{ 10 };												// 世代番号に使用するビット数
 		inline constexpr UInt32 IndexBits{ sizeof(IdType) * 8 - GenerationBits };					// インデックスに使用するビット数
 		inline constexpr IdType IndexMask{ (IdType{ 1 } << IndexBits) - IdType{ 1 } };				// インデックスマスク
 		inline constexpr IdType GenerationMask{ (IdType{ 1 } << GenerationBits) - IdType{ 1 } };	// 世代番号マスク
@@ -75,10 +75,10 @@ namespace Curry::Id
 	{
 		struct IdBase
 		{
-			constexpr explicit IdBase(IdType id) : m_Id(id) {}
-			constexpr operator IdType() const { return m_Id; }
+			constexpr explicit IdBase(IdType id) : _id(id) {}
+			constexpr operator IdType() const { return _id; }
 		private:
-			IdType m_Id;
+			IdType _id;
 		};
 	} // namespace Internal
 

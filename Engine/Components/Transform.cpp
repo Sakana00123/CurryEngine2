@@ -45,17 +45,17 @@ namespace Curry::Transform
 	Math::Vector4 Component::Rotation() const
 	{
 		assert(IsValid());
-		return s_Rotations[Id::Index(m_Id)];
+		return s_Rotations[Id::Index(_id)];
 	}
 	Math::Vector3 Component::Position() const
 	{
 		assert(IsValid());
-		return s_Positions[Id::Index(m_Id)];
+		return s_Positions[Id::Index(_id)];
 	}
 	Math::Vector3 Component::Scale() const
 	{
 		assert(IsValid());
-		return s_Scales[Id::Index(m_Id)];
+		return s_Scales[Id::Index(_id)];
 	}
 
 }

@@ -64,14 +64,22 @@ namespace Editor.GameProject
         /// ゲームエンティティをシーンに追加します。
         /// </summary>
         /// <remarks> このメソッドは UndoRedo 用に内部的に使用されます。通常は <see cref="AddGameEntityCommand"/> を使用してください。</remarks>
-        /// <param name="gameEntity"> 追加するゲームエンティティ。<see langword="null"/> ではなく、コレクションに存在しないこと。</param>
-        private void AddGameEntity(GameEntity gameEntity)
+        /// <param name="entity"> 追加するゲームエンティティ。<see langword="null"/> ではなく、コレクションに存在しないこと。</param>
+        private void AddGameEntity(GameEntity entity, int index = -1)
         {
-            // nullチェック
-            Debug.Assert(gameEntity != null);
             // ゲームエンティティが存在することを確認
-            Debug.Assert(!_gameEntities.Contains(gameEntity));
-            _gameEntities.Add(gameEntity);
+            Debug.Assert(!_gameEntities.Contains(entity));
+            entity.IsActive = IsActive;
+            if (index == -1)
+            {
+                _gameEntities.Add(entity);
+                
+            }
+            else
+            {
+                _gameEntities.Insert(index, entity);
+                
+            }
         }
         /// <summary>
         /// シーンからゲームエンティティを削除します。
@@ -80,10 +88,8 @@ namespace Editor.GameProject
         /// <param name="gameEntity"> 削除するゲームエンティティ。<see langword="null"/> ではなく、コレクションに存在すること。</param>
         private void RemoveGameEntity(GameEntity gameEntity)
         {
-            // nullチェック
-            Debug.Assert(gameEntity != null);
-            // ゲームエンティティが存在することを確認
             Debug.Assert(_gameEntities.Contains(gameEntity));
+            gameEntity.IsActive = false;
             _gameEntities.Remove(gameEntity);
         }
 
@@ -100,6 +106,10 @@ namespace Editor.GameProject
                 GameEntities = new ReadOnlyObservableCollection<GameEntity>(_gameEntities);
                 OnPropertyChanged(nameof(GameEntities));
             }
+            foreach (var entity in _gameEntities)
+            {
+                entity.IsActive = IsActive;
+            }
 
             // Commands
             AddGameEntityCommand = new RelayCommand<GameEntity>(x =>
@@ -109,7 +119,7 @@ namespace Editor.GameProject
 
                 Project.UndoRedo.Add(new UndoRedoAction(
                     () => RemoveGameEntity(x),
-                    () => _gameEntities.Insert(entityIndex, x),
+                    () => AddGameEntity(x, entityIndex),
                     $"Add {x.Name} to {Name}"));
             });
 
@@ -119,7 +129,7 @@ namespace Editor.GameProject
                 RemoveGameEntity(x);
 
                 Project.UndoRedo.Add(new UndoRedoAction(
-                    () => _gameEntities.Insert(entityIndex, x),
+                    () => AddGameEntity(x, entityIndex),
                     () => RemoveGameEntity(x),
                     $"Remove {x.Name}"));
             });

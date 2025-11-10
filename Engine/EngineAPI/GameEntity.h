@@ -10,13 +10,13 @@ namespace Curry::GameEntity
 	class Entity
 	{
 	public:
-		constexpr explicit Entity(EntityId id) : m_Id(id) {}
-		constexpr Entity() : m_Id(Id::InvalidId) {}
-		constexpr EntityId GetId() const { return m_Id; }
-		constexpr bool IsValid() const { return Id::IsValid(m_Id); }
+		constexpr explicit Entity(EntityId id) : _id(id) {}
+		constexpr Entity() : _id(Id::InvalidId) {}
+		constexpr EntityId GetId() const { return _id; }
+		constexpr bool IsValid() const { return Id::IsValid(_id); }
 
 		Transform::Component Transform() const;
 	private:
-		EntityId m_Id;
+		EntityId _id;
 	};
 } // namespace Curry::GameEntity

@@ -18,7 +18,7 @@ int main()
 
 	EngineTest test{};
 
-	if (!test.Initialize())
+	if (test.Initialize())
 	{
 		test.Run();
 	}

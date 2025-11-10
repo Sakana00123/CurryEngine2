@@ -79,7 +79,7 @@ namespace Curry::GameEntity
 	Transform::Component Entity::Transform() const
 	{
 		assert(IsAlive(*this)); // エンティティが有効であることを確認
-		const Id::IdType index{ Id::Index(m_Id) }; // エンティティのインデックスを取得
+		const Id::IdType index{ Id::Index(_id) }; // エンティティのインデックスを取得
 		return s_Transforms[index];
 	}
 }
