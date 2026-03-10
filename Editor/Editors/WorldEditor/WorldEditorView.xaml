@@ -54,7 +54,7 @@
                 <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch"
                           VerticalAlignment="Top"/>
                 <local:ProjectLayoutView />
-                <local:GameEntityView Grid.Row="1"/>
+                <local:GameObjectView Grid.Row="1"/>
             </Grid>
         </Grid>
     </Grid>

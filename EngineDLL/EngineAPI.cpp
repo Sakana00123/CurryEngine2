@@ -5,7 +5,7 @@
 
 #include "CommonHeaders.h"
 #include "Id.h"
-#include "../Engine/Components/Entity.h"
+#include "../Engine/Components/Object.h"
 #include "../Engine/Components/Transform.h"
 
 using namespace Curry;
@@ -34,32 +34,32 @@ namespace
 		}
 	};
 
-	struct GameEntityDescriptor
+	struct GameObjectDescriptor
 	{
 		TransformComponent transform;
 	};
 
-	GameEntity::Entity EntityFromId(Id::IdType id)
+	GameObject::GameObject GameObjectFromId(Id::IdType id)
 	{
-		return GameEntity::Entity{ GameEntity::EntityId{ id } };
+		return GameObject::GameObject{ GameObject::GameObjectId{ id } };
 	}
 
 } // –³–¼–¼‘O‹óŠÔ
 
-EDITOR_INTERFACE Id::IdType CreateGameEntity(GameEntityDescriptor* e)
+EDITOR_INTERFACE Id::IdType CreateGameObject(GameObjectDescriptor* e)
 {
 	assert(e);
-	GameEntityDescriptor& desc{ *e };
+	GameObjectDescriptor& desc{ *e };
 	Transform::InitInfo transformInfo{ desc.transform.ToInitInfo() };
-	GameEntity::EntityInfo entityInfo
+	GameObject::GameObjectInfo gameObjectInfo
 	{
 		&transformInfo,
 	};
-	return GameEntity::CreateGameEntity(entityInfo).GetId();
+	return GameObject::CreateGameObject(gameObjectInfo).GetId();
 }
 
-EDITOR_INTERFACE void RemoveGameEntity(Id::IdType id)
+EDITOR_INTERFACE void RemoveGameObject(Id::IdType id)
 {
 	assert(Id::IsValid(id));
-	GameEntity::RemoveGameEntity(EntityFromId(id));
+	GameObject::RemoveGameObject(GameObjectFromId(id));
 }

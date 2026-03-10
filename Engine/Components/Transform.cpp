@@ -1,5 +1,5 @@
 #include "Transform.h"
-#include "Entity.h"
+#include "Object.h"
 
 namespace Curry::Transform
 {
@@ -11,7 +11,7 @@ namespace Curry::Transform
 
 	} // 無名名前空間
 
-	Component CreateTransform(const InitInfo& info, GameEntity::Entity entity)
+	Component CreateTransform(const InitInfo& info, GameObject::GameObject entity)
 	{
 		assert(entity.IsValid()); // 有効なエンティティであることを確認
 		const Id::IdType entityIndex{ Id::Index(entity.GetId()) }; // エンティティのインデックスを取得

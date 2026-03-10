@@ -29,18 +29,18 @@ namespace Editor.Editors
             InitializeComponent();
         }
 
-        private void OnAddGameEntity_Button_Click(object sender, RoutedEventArgs e)
+        private void OnAddGameObject_Button_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var vm = button?.DataContext as Scene;
-            vm?.AddGameEntityCommand.Execute(new GameEntity(vm) { Name = "GameObject" });
+            vm?.AddGameObjectCommand.Execute(new GameObject(vm) { Name = "GameObject" });
         }
 
-        private void OnGameEntities_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnGameObjects_ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var listBox = sender as ListBox;
-            var newSelection = listBox?.SelectedItems.Cast<GameEntity>().ToList();
-            var previousSelection = newSelection!.Except(e.AddedItems.Cast<GameEntity>()).Concat(e.RemovedItems.Cast<GameEntity>()).ToList();
+            var newSelection = listBox?.SelectedItems.Cast<GameObject>().ToList();
+            var previousSelection = newSelection!.Except(e.AddedItems.Cast<GameObject>()).Concat(e.RemovedItems.Cast<GameObject>()).ToList();
 
             Project.UndoRedo.Add(new UndoRedoAction(
                 () => // Undo: 元の選択状態に戻す
@@ -56,12 +56,12 @@ namespace Editor.Editors
                 "Selection changed"
             ));
 
-            MSGameEntity msEntity = null!;
+            MSGameObject msObject = null!;
             if (newSelection.Count != 0)
             {
-                msEntity = new MSGameEntity(newSelection);
+                msObject = new MSGameObject(newSelection);
             }
-            GameEntityView.Instance.DataContext = msEntity;
+            GameObjectView.Instance.DataContext = msObject;
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Editor.Editors
     /// <summary>
     /// GameObjectView.xaml の相互作用ロジック
     /// </summary>
-    public partial class GameEntityView : UserControl
+    public partial class GameObjectView : UserControl
     {
         private Action _undoAction;
         private string _propertyName;
-        public static GameEntityView? Instance { get; private set; }
-        public GameEntityView()
+        public static GameObjectView? Instance { get; private set; }
+        public GameObjectView()
         {
             InitializeComponent();
             DataContext = null;
@@ -38,7 +38,7 @@ namespace Editor.Editors
             {
                 if (DataContext != null)
                 {
-                    (DataContext as MSEntity).PropertyChanged += (s, e) => _propertyName = e.PropertyName;
+                    (DataContext as MSObject).PropertyChanged += (s, e) => _propertyName = e.PropertyName;
                 }
             };
         }
@@ -49,12 +49,12 @@ namespace Editor.Editors
         /// <returns> UndoRedo 用のアクション </returns>
         private Action GetRenameAction()
         {
-            var vm = DataContext as MSEntity;
-            var selection = vm?.SelectedEntities.Select(entity => (entity, entity.Name)).ToList();
+            var vm = DataContext as MSObject;
+            var selection = vm?.SelectedGameObjects.Select(entity => (entity, entity.Name)).ToList();
             return new Action(() =>
             {
                 selection?.ForEach(item => item.entity.Name = item.Name);
-                (DataContext as MSEntity)?.Refresh();
+                (DataContext as MSObject)?.Refresh();
             });
         }
 
@@ -64,12 +64,12 @@ namespace Editor.Editors
         /// <returns> UndoRedo 用のアクション </returns>
         private Action GetIsEnabledAction()
         {
-            var vm = DataContext as MSEntity;
-            var selection = vm?.SelectedEntities.Select(entity => (entity, entity.IsEnabled)).ToList();
+            var vm = DataContext as MSObject;
+            var selection = vm?.SelectedGameObjects.Select(entity => (entity, entity.IsEnabled)).ToList();
             return new Action(() =>
             {
                 selection?.ForEach(item => item.entity.IsEnabled = item.IsEnabled);
-                (DataContext as MSEntity)?.Refresh();
+                (DataContext as MSObject)?.Refresh();
             });
         }
 
@@ -87,7 +87,7 @@ namespace Editor.Editors
         private void OnName_TextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             // 名前が変更された場合のみ UndoRedo に登録
-            if (_propertyName == nameof(MSEntity.Name) && _undoAction != null)
+            if (_propertyName == nameof(MSObject.Name) && _undoAction != null)
             {
                 var redoAction = GetRenameAction();
                 Project.UndoRedo.Add(new UndoRedoAction(_undoAction, redoAction, "Rename GameEntity"));
@@ -102,7 +102,7 @@ namespace Editor.Editors
         private void OnIsEnabled_CheckBox_Click(object sender, RoutedEventArgs e)
         {
             var undoAction = GetIsEnabledAction();
-            var vm = DataContext as MSEntity;
+            var vm = DataContext as MSObject;
             if (vm == null) return;
             vm.IsEnabled = ((CheckBox)sender).IsChecked == true;
             var redoAction = GetIsEnabledAction();

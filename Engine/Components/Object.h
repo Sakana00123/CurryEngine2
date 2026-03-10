@@ -9,16 +9,16 @@ namespace Curry
 	INIT_INFO(Transform);
 
 	
-	namespace GameEntity
+	namespace GameObject
 	{
-		struct EntityInfo
+		struct GameObjectInfo
 		{
 			Transform::InitInfo* transform{ nullptr };
 		};
 
-		Entity CreateGameEntity(const EntityInfo& info);
-		void RemoveGameEntity(Entity e);
-		bool IsAlive(Entity e);
+		GameObject CreateGameObject(const GameObjectInfo& info);
+		void RemoveGameObject(GameObject e);
+		bool IsAlive(GameObject e);
 	} // namespace GameEntity
 
 } // namespace Curry

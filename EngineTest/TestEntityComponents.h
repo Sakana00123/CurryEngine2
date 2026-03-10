@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Test.h"
-#include "../Engine/Components/Entity.h"
+#include "../Engine/Components/Object.h"
 #include "../Engine/Components/Transform.h"
 
 #include <iostream>
@@ -43,7 +43,7 @@ private:
 		UInt32 count = rand() % 20;
 		if (_entities.empty()) count = 1000; // 最初は多めに生成
 		Transform::InitInfo transformInfo{};
-		GameEntity::EntityInfo entityInfo
+		GameObject::GameObjectInfo entityInfo
 		{
 			&transformInfo,
 		};
@@ -51,7 +51,7 @@ private:
 		while (count > 0)
 		{
 			++_added;
-			GameEntity::Entity entity{ GameEntity::CreateGameEntity(entityInfo) };
+			GameObject::GameObject entity{ GameObject::CreateGameObject(entityInfo) };
 			assert(entity.IsValid() && Id::IsValid(entity.GetId())); // 有効なエンティティであることを確認
 			_entities.push_back(entity);
 			--count;
@@ -66,13 +66,13 @@ private:
 		while (count > 0)
 		{
 			const UInt32 index{ static_cast<UInt32>(rand()) % static_cast<UInt32>(_entities.size()) };
-			const GameEntity::Entity entity{ _entities[index] };
+			const GameObject::GameObject entity{ _entities[index] };
 			assert(entity.IsValid() && Id::IsValid(entity.GetId())); // 有効なエンティティであることを確認
 			if (entity.IsValid())
 			{
-				GameEntity::RemoveGameEntity(entity);
+				GameObject::RemoveGameObject(entity);
 				_entities.erase(_entities.begin() + index);
-				assert(!GameEntity::IsAlive(entity)); // エンティティが無効であることを確認
+				assert(!GameObject::IsAlive(entity)); // エンティティが無効であることを確認
 				++_removed;
 			}
 			--count;
@@ -86,7 +86,7 @@ private:
 		std::cout << "Current Entities: " << _numEntities << std::endl;
 	}
 
-	Util::Vector<GameEntity::Entity> _entities;
+	Util::Vector<GameObject::GameObject> _entities;
 
 	UInt32 _added{ 0 };
 	UInt32 _removed{ 0 };

@@ -61,7 +61,7 @@ namespace Editor.Components
                 }
             }
         }
-        public Transform(GameEntity owner) : base(owner)
+        public Transform(GameObject owner) : base(owner)
         {
         }
     }

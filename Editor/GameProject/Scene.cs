@@ -53,44 +53,44 @@ namespace Editor.GameProject
             }
         }
 
-        [DataMember(Name = nameof(GameEntities))]
-        private readonly ObservableCollection<GameEntity> _gameEntities = new ObservableCollection<GameEntity>();
-        public ReadOnlyObservableCollection<GameEntity> GameEntities { get; private set; }
+        [DataMember(Name = nameof(GameObjects))]
+        private readonly ObservableCollection<GameObject> _gameObjects = new ObservableCollection<GameObject>();
+        public ReadOnlyObservableCollection<GameObject> GameObjects { get; private set; }
 
-        public ICommand AddGameEntityCommand { get; private set; }
-        public ICommand RemoveGameEntityCommand { get; private set; }
+        public ICommand AddGameObjectCommand { get; private set; }
+        public ICommand RemoveGameObjectCommand { get; private set; }
 
         /// <summary>
-        /// ゲームエンティティをシーンに追加します。
+        /// ゲームオブジェクトをシーンに追加します。
         /// </summary>
-        /// <remarks> このメソッドは UndoRedo 用に内部的に使用されます。通常は <see cref="AddGameEntityCommand"/> を使用してください。</remarks>
-        /// <param name="entity"> 追加するゲームエンティティ。<see langword="null"/> ではなく、コレクションに存在しないこと。</param>
-        private void AddGameEntity(GameEntity entity, int index = -1)
+        /// <remarks> このメソッドは UndoRedo 用に内部的に使用されます。通常は <see cref="AddGameObjectCommand"/> を使用してください。</remarks>
+        /// <param name="object"> 追加するゲームオブジェクト。<see langword="null"/> ではなく、コレクションに存在しないこと。</param>
+        private void AddGameObject(GameObject @object, int index = -1)
         {
-            // ゲームエンティティが存在することを確認
-            Debug.Assert(!_gameEntities.Contains(entity));
-            entity.IsActive = IsActive;
+            // ゲームオブジェクトが存在することを確認
+            Debug.Assert(!_gameObjects.Contains(@object));
+            @object.IsActive = IsActive;
             if (index == -1)
             {
-                _gameEntities.Add(entity);
+                _gameObjects.Add(@object);
                 
             }
             else
             {
-                _gameEntities.Insert(index, entity);
+                _gameObjects.Insert(index, @object);
                 
             }
         }
         /// <summary>
-        /// シーンからゲームエンティティを削除します。
+        /// シーンからゲームオブジェクトを削除します。
         /// </summary>
-        /// <remarks> このメソッドは UndoRedo 用に内部的に使用されます。通常は <see cref="RemoveGameEntityCommand"/> を使用してください。</remarks>
-        /// <param name="gameEntity"> 削除するゲームエンティティ。<see langword="null"/> ではなく、コレクションに存在すること。</param>
-        private void RemoveGameEntity(GameEntity gameEntity)
+        /// <remarks> このメソッドは UndoRedo 用に内部的に使用されます。通常は <see cref="RemoveGameObjectCommand"/> を使用してください。</remarks>
+        /// <param name="gameObject"> 削除するゲームオブジェクト。<see langword="null"/> ではなく、コレクションに存在すること。</param>
+        private void RemoveGameObject(GameObject gameObject)
         {
-            Debug.Assert(_gameEntities.Contains(gameEntity));
-            gameEntity.IsActive = false;
-            _gameEntities.Remove(gameEntity);
+            Debug.Assert(_gameObjects.Contains(gameObject));
+            gameObject.IsActive = false;
+            _gameObjects.Remove(gameObject);
         }
 
         /// <summary>
@@ -101,36 +101,36 @@ namespace Editor.GameProject
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (_gameEntities != null)
+            if (_gameObjects != null)
             {
-                GameEntities = new ReadOnlyObservableCollection<GameEntity>(_gameEntities);
-                OnPropertyChanged(nameof(GameEntities));
+                GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
+                OnPropertyChanged(nameof(GameObjects));
             }
-            foreach (var entity in _gameEntities)
+            foreach (var gameObject in _gameObjects)
             {
-                entity.IsActive = IsActive;
+                gameObject.IsActive = IsActive;
             }
 
             // Commands
-            AddGameEntityCommand = new RelayCommand<GameEntity>(x =>
+            AddGameObjectCommand = new RelayCommand<GameObject>(x =>
             {
-                AddGameEntity(x);
-                var entityIndex = _gameEntities!.Count - 1;
+                AddGameObject(x);
+                var index = _gameObjects!.Count - 1;
 
                 Project.UndoRedo.Add(new UndoRedoAction(
-                    () => RemoveGameEntity(x),
-                    () => AddGameEntity(x, entityIndex),
+                    () => RemoveGameObject(x),
+                    () => AddGameObject(x, index),
                     $"Add {x.Name} to {Name}"));
             });
 
-            RemoveGameEntityCommand = new RelayCommand<GameEntity>(x =>
+            RemoveGameObjectCommand = new RelayCommand<GameObject>(x =>
             {
-                var entityIndex = _gameEntities!.IndexOf(x);
-                RemoveGameEntity(x);
+                var index = _gameObjects!.IndexOf(x);
+                RemoveGameObject(x);
 
                 Project.UndoRedo.Add(new UndoRedoAction(
-                    () => AddGameEntity(x, entityIndex),
-                    () => RemoveGameEntity(x),
+                    () => AddGameObject(x, index),
+                    () => RemoveGameObject(x),
                     $"Remove {x.Name}"));
             });
         }

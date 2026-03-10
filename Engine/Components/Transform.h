@@ -11,6 +11,6 @@ namespace Curry::Transform
 	};
 
 
-	Component CreateTransform(const InitInfo& info, GameEntity::Entity entity);
+	Component CreateTransform(const InitInfo& info, GameObject::GameObject entity);
 	void RemoveTransform(Component c);
 }

@@ -17,7 +17,7 @@ namespace Editor.EngineAPIStructs
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    class GameEntityDescriptor
+    class GameObjectDescriptor
     {
         public TransformComponent Transform = new TransformComponent();
     }
@@ -31,27 +31,27 @@ namespace Editor.DllWrappers
         private const string _dllName = "EngineDLL.dll";
 
         [DllImport(_dllName)]
-        private static extern int CreateGameEntity(GameEntityDescriptor desc);
-        public static int CreateGameEntity(GameEntity entity)
+        private static extern int CreateGameObject(GameObjectDescriptor desc);
+        public static int CreateGameObject(GameObject @object)
         {
-            GameEntityDescriptor desc = new GameEntityDescriptor();
+            GameObjectDescriptor desc = new GameObjectDescriptor();
 
             // Transform Component
             {
-                var c = entity.GetComponent<Transform>();
+                var c = @object.GetComponent<Transform>();
                 desc.Transform.Position = c.Position;
                 desc.Transform.Rotation = c.Rotation;
                 desc.Transform.Scale = c.Scale;
             }
 
-            return CreateGameEntity(desc);
+            return CreateGameObject(desc);
         }
 
         [DllImport(_dllName)]
-        private static extern void RemoveGameEntity(int id);
-        public static void RemoveGameEntity(GameEntity entity)
+        private static extern void RemoveGameObject(int id);
+        public static void RemoveGameObject(GameObject @object)
         {
-            RemoveGameEntity(entity.EntityId);
+            RemoveGameObject(@object.EntityId);
         }
     }
 }
