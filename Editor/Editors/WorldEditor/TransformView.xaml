@@ -23,7 +23,13 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Position" Grid.Column="0" Grid.Row="0"/>
-            
+            <!-- ここにPositionのGUIを実装する -->
+            <!--<utl:Vector3Editor Grid.Column="1" Grid.Row="0" Vector="{Binding Position, UpdateSourceTrigger=Explicit}"/>-->
+
+            <TextBlock Text="Rotation" Grid.Column="0" Grid.Row="1"/>
+
+            <TextBlock Text="Scale" Grid.Column="0" Grid.Row="2"/>
+
 
         </Grid>
     </local:ComponentView>
