@@ -157,41 +157,37 @@ namespace Editor.Components
 
         public List<GameObject> SelectedGameObjects { get; }
 
-        public static float? GetMixedValue(List<GameObject> entities, Func<GameObject, float> getProperty)
+        private void MakeComponentList()
         {
-            var value = getProperty(entities.First());
-            foreach (var obj in entities.Skip(1))
+            _components.Clear();
+            var firstGameObject = SelectedGameObjects.First();
+            if (firstGameObject == null) return;
+
+            foreach (var component in firstGameObject.Components)
             {
-                if (!value.IsTheSameAs(getProperty(obj)))
+                var type = component.GetType();
+                if (!SelectedGameObjects.Skip(1).Any(gameObject => gameObject.GetComponent(type) == null))
                 {
-                    return null;
+                    Debug.Assert(Components.FirstOrDefault(x => x.GetType() == type) == null);
+                    _components.Add(component.GetMultiSelectionComponent(this));
                 }
             }
-            return value;
         }
-        public static bool? GetMixedValue(List<GameObject> entities, Func<GameObject, bool> getProperty)
+
+        public static float? GetMixedValue<T>(List<T> objects, Func<T, float> getProperty)
         {
-            var value = getProperty(entities.First());
-            foreach (var obj in entities.Skip(1))
-            {
-                if (value != (getProperty(obj)))
-                {
-                    return null;
-                }
-            }
-            return value;
+            var value = getProperty(objects.First());
+            return objects.Skip(1).Any(x => !getProperty(x).IsTheSameAs(value)) ? null : value;
         }
-        public static string? GetMixedValue(List<GameObject> entities, Func<GameObject, string> getProperty)
+        public static bool? GetMixedValue<T>(List<T> objects, Func<T, bool> getProperty)
         {
-            var value = getProperty(entities.First());
-            foreach (var obj in entities.Skip(1))
-            {
-                if (value != (getProperty(obj)))
-                {
-                    return null;
-                }
-            }
-            return value;
+            var value = getProperty(objects.First());
+            return objects.Skip(1).Any(x => getProperty(x) != value) ? null : value;
+        }
+        public static string? GetMixedValue<T>(List<T> objects, Func<T, string> getProperty)
+        {
+            var value = getProperty(objects.First());
+            return objects.Skip(1).Any(x => getProperty(x) != value) ? null : value;
         }
         protected virtual bool UpdateGameObjects(string propertyName)
         {
@@ -215,6 +211,7 @@ namespace Editor.Components
         {
             _enableUpdates = false;
             UpdateMSGameObject();
+            MakeComponentList();
             _enableUpdates = true;
         }
 

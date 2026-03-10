@@ -18,6 +18,8 @@ namespace Editor.Components
     [DataContract]
     abstract class Component : ViewModelBase
     {
+        public abstract IMSComponent GetMultiSelectionComponent(MSObject msObject);
+
         [DataMember]
         public GameObject Owner { get; private set; }
 
@@ -29,7 +31,32 @@ namespace Editor.Components
     }
 
     abstract class MSComponent<T> : ViewModelBase, IMSComponent where T : Component
-    { }
+    {
+        private bool _enableUpdates = true;
+        public List<T> SelectedComponents { get; }
+
+        // UpdateComponents メソッドは、プロパティの変更に応じて選択されたコンポーネントの状態を更新するための抽象メソッドです。
+        protected abstract bool UpdateComponents(string propertyName);
+        // UpdateMSComponent メソッドは、MSComponent 自身の状態を更新するための抽象メソッドです。これにより、プロパティの変更に応じて MSComponent の状態も適切に更新されることが保証されます。
+        protected abstract bool UpdateMSComponent();
+
+        public void Refresh()
+        {
+            _enableUpdates = false;
+            UpdateMSComponent();
+            _enableUpdates = true;
+        }
+
+        public MSComponent(MSObject msObject)
+        {
+            Debug.Assert(msObject?.SelectedGameObjects?.Count != 0);
+            SelectedComponents = msObject?.SelectedGameObjects?.Select(x => x.GetComponent<T>()).ToList()!;
+            PropertyChanged += (s, e) =>
+            {
+                if (_enableUpdates) _ = UpdateComponents(e.PropertyName!);
+            };
+        }
+    }
 
 
 }
